@@ -26,6 +26,8 @@ func Test(t *testing.T) {
 		{"path/tome/nowhere//", "/path/tome/nowhere/"},
 		{"../root/../root/../root/", "/root/"},
 		{"ужас/../кирлица/./също/може/да/е/път", "/кирлица/също/може/да/е/път/"},
+		{"dots.in.names/are/not/../here/to/stay", "/dots.in.names/are/here/to/stay/"},
+		{"/dots.before/../more/dots", "/more/dots/"},
 	}
 
 	for _, test := range tests {
