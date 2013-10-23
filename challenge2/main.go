@@ -1,52 +1,73 @@
 package main
 
 const (
-	up    = "up"
-	down  = "down"
-	right = "right"
-	left  = "left"
+	up = iota
+	down
+	right
+	left
 )
 
-type turns map[bool]string
+type turns map[bool]int
 
-var rotations = map[string]turns{
-	"up": turns{
-		true:  "left",
-		false: "right",
+var rotations = map[int]turns{
+	up: turns{
+		true:  left,
+		false: right,
 	},
 
-	"left": turns{
-		true:  "down",
-		false: "up",
+	left: turns{
+		true:  down,
+		false: up,
 	},
 
-	"down": turns{
-		true:  "right",
-		false: "left",
+	down: turns{
+		true:  right,
+		false: left,
 	},
 
-	"right": turns{
-		true:  "up",
-		false: "down",
+	right: turns{
+		true:  up,
+		false: down,
 	},
 }
 
 type DragonFractal struct {
 	iteration int
-	last      string
+	last      int
 }
 
 func (dragon *DragonFractal) Next() string {
-	var n = dragon.iteration
 
-	if n == 0 {
+	if dragon.iteration == 0 {
 		dragon.iteration += 1
 		dragon.last = up
-		return dragon.last
+		return dragon.translate(up)
 	}
 
-	var turn_left bool = !((((n & -(n)) << 1) & n) != 0)
+	var turn_left bool = dragon.isNextTurnLeft()
 	dragon.iteration += 1
 	dragon.last = rotations[dragon.last][turn_left]
-	return dragon.last
+	return dragon.translate(dragon.last)
+}
+
+func (dragon *DragonFractal) translate(direction int) string {
+	switch direction {
+	case up:
+		return "up"
+	case down:
+		return "down"
+	case left:
+		return "left"
+	case right:
+		return "right"
+	}
+	return ""
+}
+
+func (dragon *DragonFractal) isNextTurnRight() bool {
+	return (((dragon.iteration & -(dragon.iteration)) << 1) & dragon.iteration) != 0
+}
+
+func (dragon *DragonFractal) isNextTurnLeft() bool {
+	return !dragon.isNextTurnRight()
 }

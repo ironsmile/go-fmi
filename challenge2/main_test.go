@@ -28,3 +28,17 @@ func BenchmarkDragonFractal_Next(b *testing.B) {
 		dragon.Next()
 	}
 }
+
+func BenchmarkDragonFractal_isNextTurnLeft(b *testing.B) {
+	dragon := new(DragonFractal)
+	for i := 0; i < b.N; i++ {
+		dragon.isNextTurnLeft()
+	}
+}
+
+func BenchmarkDragonFractal_isNextTurnRight(b *testing.B) {
+	dragon := new(DragonFractal)
+	for i := 0; i < b.N; i++ {
+		dragon.isNextTurnRight()
+	}
+}
