@@ -25,6 +25,6 @@ func Test(t *testing.T) {
 func BenchmarkDragonFractal_Next(b *testing.B) {
 	dragon := new(DragonFractal)
 	for i := 0; i < b.N; i++ {
-		dragon.Next(	)
+		dragon.Next()
 	}
 }
