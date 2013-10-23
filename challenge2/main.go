@@ -11,23 +11,23 @@ type turns map[bool]int
 
 var rotations = map[int]turns{
 	up: turns{
-		true:  left,
-		false: right,
-	},
-
-	left: turns{
-		true:  down,
-		false: up,
-	},
-
-	down: turns{
 		true:  right,
 		false: left,
 	},
 
-	right: turns{
+	left: turns{
 		true:  up,
 		false: down,
+	},
+
+	down: turns{
+		true:  left,
+		false: right,
+	},
+
+	right: turns{
+		true:  down,
+		false: up,
 	},
 }
 
@@ -44,7 +44,7 @@ func (dragon *DragonFractal) Next() string {
 		return dragon.translate(up)
 	}
 
-	var turn_left bool = dragon.isNextTurnLeft()
+	var turn_left bool = dragon.isNextTurnRight()
 	dragon.iteration += 1
 	dragon.last = rotations[dragon.last][turn_left]
 	return dragon.translate(dragon.last)
@@ -66,8 +66,4 @@ func (dragon *DragonFractal) translate(direction int) string {
 
 func (dragon *DragonFractal) isNextTurnRight() bool {
 	return (((dragon.iteration & -(dragon.iteration)) << 1) & dragon.iteration) != 0
-}
-
-func (dragon *DragonFractal) isNextTurnLeft() bool {
-	return !dragon.isNextTurnRight()
 }
