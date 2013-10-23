@@ -1,9 +1,16 @@
+// Here we create a DragonFractal type which can be used to guide you
+// how to draw a dragon curve. Its only method tells you in what direction
+// you should draw the next line
+
 package main
 
+// right MUST be the first in this enum so that its value is 0.
+// We are depending on this to remove the if dragon.iteration == 0 on every call
+// from the Next method.
 const (
-	up = iota
+	right = iota
 	down
-	right
+	up
 	left
 )
 
@@ -31,22 +38,16 @@ var rotations = map[int]turns{
 	},
 }
 
+// Use this type to draw a dragon curve
 type DragonFractal struct {
-	iteration int
-	last      int
+	iteration int // how many lines have we drawn already
+	last      int // what direction was the last line
 }
 
+// Tells you in which direction to draw next
 func (dragon *DragonFractal) Next() string {
-
-	if dragon.iteration == 0 {
-		dragon.iteration += 1
-		dragon.last = up
-		return dragon.translate(up)
-	}
-
-	var turn_left bool = dragon.isNextTurnRight()
-	dragon.iteration += 1
-	dragon.last = rotations[dragon.last][turn_left]
+	dragon.last = rotations[dragon.last][dragon.isNextTurnRight()]
+	dragon.iteration++
 	return dragon.translate(dragon.last)
 }
 

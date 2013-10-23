@@ -45,4 +45,3 @@ func BenchmarkDragonFractal_translate(b *testing.B) {
 		dragon.translate(3)
 	}
 }
-
