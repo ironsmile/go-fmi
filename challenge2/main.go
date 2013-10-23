@@ -14,30 +14,6 @@ const (
 	left
 )
 
-type turns map[bool]int
-
-var rotations = map[int]turns{
-	up: turns{
-		true:  right,
-		false: left,
-	},
-
-	left: turns{
-		true:  up,
-		false: down,
-	},
-
-	down: turns{
-		true:  left,
-		false: right,
-	},
-
-	right: turns{
-		true:  down,
-		false: up,
-	},
-}
-
 // Use this type to draw a dragon curve
 type DragonFractal struct {
 	iteration int // how many lines have we drawn already
@@ -46,7 +22,7 @@ type DragonFractal struct {
 
 // Tells you in which direction to draw next
 func (dragon *DragonFractal) Next() string {
-	dragon.last = rotations[dragon.last][dragon.isNextTurnRight()]
+	dragon.last = dragon.nextFromRightTurn(dragon.isNextTurnRight())
 	dragon.iteration++
 	return dragon.translate(dragon.last)
 }
@@ -63,6 +39,37 @@ func (dragon *DragonFractal) translate(direction int) string {
 		return "right"
 	}
 	return ""
+}
+
+func (dragon *DragonFractal) nextFromRightTurn(is_right bool) int {
+	switch dragon.last {
+		case up:
+			if is_right {
+				return right
+			} else {
+				return left
+			}
+		case down:
+			if is_right {
+				return left
+			} else {
+				return right
+			}
+		case left:
+			if is_right {
+				return up
+			} else {
+				return down
+			}
+		case right:
+			if is_right {
+				return down
+			} else {
+				return up
+			}
+		default:
+			return up
+	}
 }
 
 func (dragon *DragonFractal) isNextTurnRight() bool {

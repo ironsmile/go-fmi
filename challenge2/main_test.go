@@ -3,7 +3,7 @@ package main
 import "testing"
 import "fmt"
 
-func Test(t *testing.T) {
+func TestDragonFractalWithFirstFewLines(t *testing.T) {
 	tests := []string{"up", "left", "down", "left", "down", "right", "down", "left"}
 
 	dragon := new(DragonFractal)
