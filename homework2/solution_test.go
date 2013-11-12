@@ -1,3 +1,7 @@
+// Disclaimer
+// Some of the tests here are not fit to represent real premultiplied alpha composition.
+// They test a set of arbitrary rules for something similar.
+
 package main
 
 import (
@@ -87,7 +91,7 @@ func TestBasicRGBARowsCall(t *testing.T) {
 		t.Error(err)
 	}
 	pixel = picture.InspectPixel(1, 0)
-	if err := assertColor(pixel, 7, 13, 26); err != nil {
+	if err := assertColor(pixel, 6, 12, 25); err != nil {
 		t.Error(err)
 	}
 }
@@ -108,7 +112,7 @@ func TestBasicBGRARowsCall(t *testing.T) {
 	}
 
 	pixel = picture.InspectPixel(1, 0)
-	if err := assertColor(pixel, 26, 13, 7); err != nil {
+	if err := assertColor(pixel, 25, 12, 6); err != nil {
 		t.Error(err)
 	}
 }
@@ -123,7 +127,7 @@ func TestBasicAlphaNormalization(t *testing.T) {
 	picture := ParseImage(data, header)
 
 	pixel = picture.InspectPixel(0, 0)
-	if err := assertColor(pixel, 11, 6, 122); err != nil {
+	if err := assertColor(pixel, 10, 5, 121); err != nil {
 		t.Error(err)
 	}
 }
@@ -153,7 +157,7 @@ func TestAlphaJustAboveHalf(t *testing.T) {
 	picture := ParseImage(data, header)
 
 	pixel = picture.InspectPixel(0, 0)
-	if err := assertColor(pixel, 1, 128, 0); err != nil {
+	if err := assertColor(pixel, 0, 128, 0); err != nil {
 		t.Error(err)
 	}
 }
@@ -191,6 +195,22 @@ func TestBasicGRBCall(t *testing.T) {
 	}
 
 	if err := assertColor(picture.InspectPixel(2, 0), 33, 31, 41); err != nil {
+		t.Error(err)
+	}
+}
+
+func TestZeroAlphaWithRGBA(t *testing.T) {
+	data := []byte{
+		0, 12, 244, 0, 14, 26, 52, 127,
+		31, 33, 41, 255, 36, 133, 241, 255,
+	}
+
+	var pixel Pixel
+	header := Header{"RGBA", 2}
+	picture := ParseImage(data, header)
+
+	pixel = picture.InspectPixel(0, 0)
+	if err := assertColor(pixel, 0, 12, 244); err != nil {
 		t.Error(err)
 	}
 }
