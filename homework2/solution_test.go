@@ -38,10 +38,6 @@ func TestBasicRGBCall(t *testing.T) {
 	if err := assertColor(picture.InspectPixel(0, 0), 0, 12, 244); err != nil {
 		t.Error(err)
 	}
-
-	if err := assertColor(picture.InspectPixel(1, 0), 13, 26, 52); err != nil {
-		t.Error(err)
-	}
 }
 
 func TestBasicRGBACall(t *testing.T) {
@@ -60,11 +56,6 @@ func TestBasicRGBACall(t *testing.T) {
 	if err := assertColor(second_pixel, 36, 133, 241); err != nil {
 		t.Error(err)
 	}
-
-	third_pixel := picture.InspectPixel(2, 0)
-	if err := assertColor(third_pixel, 31, 33, 41); err != nil {
-		t.Error(err)
-	}
 }
 
 func TestBasicRGBARowsCall(t *testing.T) {
@@ -72,22 +63,11 @@ func TestBasicRGBARowsCall(t *testing.T) {
 		0, 12, 244, 127, 14, 26, 52, 127,
 		31, 33, 41, 255, 36, 133, 241, 255,
 	}
-
-	var pixel Pixel
 	header := Header{"RGBA", 2}
 	picture := ParseImage(data, header)
 
-	pixel = picture.InspectPixel(1, 1)
+	pixel := picture.InspectPixel(1, 1)
 	if err := assertColor(pixel, 36, 133, 241); err != nil {
-		t.Error(err)
-	}
-
-	pixel = picture.InspectPixel(0, 1)
-	if err := assertColor(pixel, 31, 33, 41); err != nil {
-		t.Error(err)
-	}
-	pixel = picture.InspectPixel(1, 0)
-	if err := assertColor(pixel, 7, 13, 26); err != nil {
 		t.Error(err)
 	}
 }
@@ -97,18 +77,11 @@ func TestBasicBGRARowsCall(t *testing.T) {
 		0, 12, 244, 127, 14, 26, 52, 127,
 		31, 33, 41, 255, 36, 133, 241, 255,
 	}
-
-	var pixel Pixel
 	header := Header{"BGRA", 2}
 	picture := ParseImage(data, header)
 
-	pixel = picture.InspectPixel(1, 1)
+	pixel := picture.InspectPixel(1, 1)
 	if err := assertColor(pixel, 241, 133, 36); err != nil {
-		t.Error(err)
-	}
-
-	pixel = picture.InspectPixel(1, 0)
-	if err := assertColor(pixel, 26, 13, 7); err != nil {
 		t.Error(err)
 	}
 }
@@ -175,21 +148,5 @@ func TestPixelColorStringRepresentation(t *testing.T) {
 	if found != expected {
 		t.Errorf("String representation was wrong. Expected %s but got %s", expected,
 			found)
-	}
-}
-
-func TestBasicGRBCall(t *testing.T) {
-	data := []byte{
-		0, 12, 244, 13, 26, 52, 31, 33, 41,
-	}
-
-	header := Header{"GRB", 3}
-	picture := ParseImage(data, header)
-
-	if err := assertColor(picture.InspectPixel(0, 0), 12, 0, 244); err != nil {
-		t.Error(err)
-	}
-	if err := assertColor(picture.InspectPixel(2, 0), 33, 31, 41); err != nil {
-		t.Error(err)
 	}
 }
