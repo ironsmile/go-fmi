@@ -210,7 +210,38 @@ func TestZeroAlphaWithRGBA(t *testing.T) {
 	picture := ParseImage(data, header)
 
 	pixel = picture.InspectPixel(0, 0)
+	if err := assertColor(pixel, 0, 0, 0); err != nil {
+		t.Error(err)
+	}
+}
+
+func TestMaxAlphaWithRGBA(t *testing.T) {
+	data := []byte{
+		0, 12, 244, 255, 1, 127, 255, 255,
+		31, 128, 41, 255, 36, 133, 241, 255,
+	}
+
+	var pixel Pixel
+	header := Header{"RGBA", 2}
+	picture := ParseImage(data, header)
+
+	pixel = picture.InspectPixel(0, 0)
 	if err := assertColor(pixel, 0, 12, 244); err != nil {
+		t.Error(err)
+	}
+
+	pixel = picture.InspectPixel(1, 0)
+	if err := assertColor(pixel, 1, 127, 255); err != nil {
+		t.Error(err)
+	}
+
+	pixel = picture.InspectPixel(0, 1)
+	if err := assertColor(pixel, 31, 128, 41); err != nil {
+		t.Error(err)
+	}
+
+	pixel = picture.InspectPixel(1, 1)
+	if err := assertColor(pixel, 36, 133, 241); err != nil {
 		t.Error(err)
 	}
 }
