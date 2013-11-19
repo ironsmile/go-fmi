@@ -410,7 +410,7 @@ func TestRLEFormat(t *testing.T) {
 		1, 12, 15, 16, 38,
 	}
 
-    var pixel *Pixel
+	var pixel *Pixel
 
 	picture, parseError := ParseImage(data, header)
 
