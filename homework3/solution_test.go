@@ -183,3 +183,55 @@ func TestPhones(t *testing.T) {
 		t.Errorf("`%s` was not among the found phones as it should have been", phone)
 	}
 }
+
+func TestEmails(t *testing.T) {
+	mdParser := NewMarkdownParser(`Някакви example@example.com,
+		example.doted@gmail.co.uk, някой с цифри 5example@domain-name.com
+		Сега за неща които не са то точно имейли exaple@example
+		example@example.
+`)
+	emails := mdParser.Emails()
+
+	expectedEmails := []string{
+		"example@example.com",
+		"example.doted@gmail.co.uk",
+		"5example@domain-name.com",
+	}
+
+	if len(emails) != len(expectedEmails) {
+		t.Errorf("Number of emails (%d) differ than expected (%d)", len(emails),
+			len(expectedEmails))
+	}
+
+	for _, email := range expectedEmails {
+		if contains(emails, email) {
+			continue
+		}
+		t.Errorf("`%s` was not among the found emails as it should have been", email)
+	}
+}
+
+func TestLinks(t *testing.T) {
+	mdParser := NewMarkdownParser(`
+http://fmi.golang.bg/tasks/3
+scheme://domain.name:80/path?query_string#fragment_id
+`)
+	links := mdParser.Links()
+
+	expectedLinks := []string{
+		"http://fmi.golang.bg/tasks/3",
+		"scheme://domain.name:80/path?query_string#fragment_id",
+	}
+
+	if len(links) != len(expectedLinks) {
+		t.Errorf("Number of links (%d) differ than expected (%d)", len(links),
+			len(expectedLinks))
+	}
+
+	for _, link := range expectedLinks {
+		if contains(links, link) {
+			continue
+		}
+		t.Errorf("`%s` was not among the found links as it should have been", link)
+	}
+}
