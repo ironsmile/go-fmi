@@ -23,7 +23,7 @@ func TestHeaders(t *testing.T) {
 	}
 
 	if headers[0] != "MarkdownParser" {
-		t.Fatalf("Expected first header to be MarkdownParser but it was %s", headers[0])
+		t.Errorf("Expected first header to be MarkdownParser but it was %s", headers[0])
 	}
 
 	mdParser = NewMarkdownParser("Lalala\nSomething\n==-===\nother")
@@ -44,7 +44,6 @@ func TestHeaders(t *testing.T) {
 		"# Something #\n",
 		"# Something ####\n",
 		"# Something ####\n",
-		"#Something",
 		"lala\n# Something",
 		"lala\n# Something\nlala",
 	}
@@ -88,8 +87,16 @@ func TestSubHeadersOf(t *testing.T) {
 		t.Fatalf("Parser found no sub headers where there were some")
 	}
 
+	if len(subHeaders) != 2 {
+		t.Fatalf("Expected 2 sub headers but found %d", len(subHeaders))
+	}
+
 	if subHeaders[0] != "type MarkdownParser" {
-		t.Fail()
+		t.Errorf("type MarkdownParser was not the first subheader")
+	}
+
+	if subHeaders[1] != "Пример" {
+		t.Errorf("Пример was not the second subheader")
 	}
 }
 
@@ -233,5 +240,25 @@ scheme://domain.name:80/path?query_string#fragment_id
 			continue
 		}
 		t.Errorf("`%s` was not among the found links as it should have been", link)
+	}
+}
+
+func TestMergeFunc(t *testing.T) {
+	one := []string{"one", "slice"}
+	other := []string{"another", "slce"}
+
+	merged := merge(one, other)
+
+	if len(merged) != 4 {
+		t.Errorf("Found merge count %d but expected %d", len(merged), 4)
+	}
+
+	expected := []string{"one", "slice", "another", "slce"}
+
+	for _, word := range expected {
+		if contains(merged, word) {
+			continue
+		}
+		t.Errorf("`%s` was not amoung the merged slice", word)
 	}
 }
