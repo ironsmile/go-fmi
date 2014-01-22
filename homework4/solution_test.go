@@ -331,6 +331,16 @@ func validateReplay(t *testing.T, mall [4][4]rune, replay [][2][2]int) {
 				moveIndex))
 		}
 
+		for _, shop := range possibleShops {
+			if shop == to {
+				break
+			}
+			if !occupied(shop) {
+				fatal(fmt.Sprintf("Dweller did not move on empty possition %d",
+					moveIndex))
+			}
+		}
+
 		dweller.moves += 1
 
 		board[from[0]][from[1]] = nil
