@@ -105,6 +105,12 @@ func TestPossibleMoves(t *testing.T) {
 	calculated = possibleMoves(pos)
 	expected = [][2]int{{0, 0}, {2, 2}, {2, 0}, {0, 2}}
 	check(pos, calculated, expected)
+
+	pos = [2]int{1, 2}
+	calculated = possibleMoves(pos)
+	expected = [][2]int{{0, 1}, {2, 3}, {2, 1}, {0, 3}}
+	check(pos, calculated, expected)
+
 }
 
 func TestNonInteractingDwellers(t *testing.T) {
@@ -326,14 +332,20 @@ func validateReplay(t *testing.T, mall [4][4]rune, replay [][2][2]int) {
 				moveIndex))
 		}
 
+		movePossible := false
 		for _, shop := range possibleShops {
 			if shop == to {
+				movePossible = true
 				break
 			}
 			if !occupied(shop) {
 				fatal(fmt.Sprintf("Dweller did not move on empty possition %d",
 					moveIndex))
 			}
+		}
+
+		if !movePossible {
+			fatal(fmt.Sprintf("Dweller made an impossible move - %d", moveIndex))
 		}
 
 		dweller.moves += 1
