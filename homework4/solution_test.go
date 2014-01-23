@@ -91,24 +91,19 @@ func TestPossibleMoves(t *testing.T) {
 		}
 	}
 
-	pos := [2]int{1, 1}
+	var pos = [2]int{0, 0}
 	calculated := possibleMoves(pos)
-	expected := [][2]int{{0, 0}, {2, 2}, {0, 2}, {2, 0}}
-	check(pos, calculated, expected)
-
-	pos = [2]int{0, 0}
-	calculated = possibleMoves(pos)
-	expected = [][2]int{{3, 3}, {1, 1}, {3, 1}, {1, 3}}
+	var expected = [][2]int{{3, 3}, {1, 1}, {1, 3}, {3, 1}}
 	check(pos, calculated, expected)
 
 	pos = [2]int{3, 3}
 	calculated = possibleMoves(pos)
-	expected = [][2]int{{2, 2}, {0, 0}, {2, 0}, {0, 2}}
+	expected = [][2]int{{2, 2}, {0, 0}, {0, 2}, {2, 0}}
 	check(pos, calculated, expected)
 
 	pos = [2]int{1, 1}
 	calculated = possibleMoves(pos)
-	expected = [][2]int{{0, 0}, {2, 2}, {0, 2}, {2, 0}}
+	expected = [][2]int{{0, 0}, {2, 2}, {2, 0}, {0, 2}}
 	check(pos, calculated, expected)
 }
 
