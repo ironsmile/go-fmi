@@ -283,7 +283,7 @@ func validateReplay(t *testing.T, mall [4][4]rune, replay [][2][2]int) {
 
 	fatal := func(msg string) {
 		debugMessage := fmt.Sprintf(`%s
-		Mall starting possition:
+		Mall starting position:
 		%#v
 		All Moves: %#v
 		`, msg, mall, replay)
@@ -339,7 +339,7 @@ func validateReplay(t *testing.T, mall [4][4]rune, replay [][2][2]int) {
 				break
 			}
 			if !occupied(shop) {
-				fatal(fmt.Sprintf("Dweller did not move on empty possition %d",
+				fatal(fmt.Sprintf("Dweller did not move on empty position %d",
 					moveIndex))
 			}
 		}
